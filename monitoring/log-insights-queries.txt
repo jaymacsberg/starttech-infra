@@ -1,0 +1,24 @@
+# StartTech CloudWatch Logs Insights Queries
+
+# 1. Recent backend logs
+fields @timestamp, @message
+| sort @timestamp desc
+| limit 50
+
+# 2. Backend errors
+fields @timestamp, @message
+| filter @message like /ERROR|error|failed|panic/
+| sort @timestamp desc
+| limit 50
+
+# 3. Health check traffic
+fields @timestamp, @message
+| filter @message like /\/health/
+| sort @timestamp desc
+| limit 50
+
+# 4. Slow requests, if latency is included in structured logs
+fields @timestamp, @message
+| filter @message like /latency/
+| sort @timestamp desc
+| limit 50

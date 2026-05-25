@@ -1,0 +1,27 @@
+{
+  "widgets": [
+    {
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 3,
+      "properties": {
+        "markdown": "# StartTech Monitoring Dashboard\nTracks backend logs, ALB health, EC2 Auto Scaling, and application health."
+      }
+    },
+    {
+      "type": "log",
+      "x": 0,
+      "y": 3,
+      "width": 24,
+      "height": 6,
+      "properties": {
+        "query": "fields @timestamp, @message | sort @timestamp desc | limit 20",
+        "region": "eu-west-1",
+        "title": "Recent Backend Logs",
+        "view": "table"
+      }
+    }
+  ]
+}

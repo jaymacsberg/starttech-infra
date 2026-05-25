@@ -1,0 +1,21 @@
+aws_region  = "eu-west-1"
+project_name = "starttech"
+environment  = "prod"
+
+key_pair_name    = "your-existing-ec2-keypair-name"
+allowed_ssh_cidr = "YOUR_PUBLIC_IP/32"
+
+backend_instance_type = "t3.micro"
+asg_min_size          = 1
+asg_desired_capacity  = 1
+asg_max_size          = 2
+
+backend_image = "ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/starttech-backend:latest"
+
+mongo_uri      = "mongodb+srv://USERNAME:PASSWORD@cluster.mongodb.net/much_todo_db"
+db_name        = "much_todo_db"
+jwt_secret_key = "replace-with-a-long-random-secret"
+
+enable_cache    = true
+allowed_origins = "https://your-cloudfront-domain.cloudfront.net"
+cookie_domains  = "your-cloudfront-domain.cloudfront.net"
