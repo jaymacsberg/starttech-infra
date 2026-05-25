@@ -1,28 +1,16 @@
-name: Infrastructure Deploy
-
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "terraform/**"
-      - ".github/workflows/infrastructure-deploy.yml"
-
 jobs:
   terraform:
-    name: Terraform Validate and Plan
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: terraform
-
-    permissions:
-      contents: read
+    env:
+      AWS_REGION: eu-west-1
+      TF_VAR_key_pair_name: ${{ secrets.TF_VAR_key_pair_name }}
+      TF_VAR_allowed_ssh_cidr: ${{ secrets.TF_VAR_allowed_ssh_cidr }}
+      TF_VAR_mongo_uri: ${{ secrets.TF_VAR_mongo_uri }}
+      TF_VAR_jwt_secret_key: ${{ secrets.TF_VAR_jwt_secret_key }}
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Configure AWS credentials
@@ -30,21 +18,19 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION || 'eu-west-1' }}
+          aws-region: eu-west-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.14.8
 
-      - name: Terraform format check
-        run: terraform fmt -check -recursive
-
-      - name: Terraform init
+      - name: Terraform Init
+        working-directory: terraform
         run: terraform init
 
-      - name: Terraform validate
+      - name: Terraform Validate
+        working-directory: terraform
         run: terraform validate
 
-      - name: Terraform plan
+      - name: Terraform Plan
+        working-directory: terraform
         run: terraform plan -input=false
